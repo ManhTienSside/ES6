@@ -22,8 +22,6 @@ document.getElementById('btnAdd').addEventListener('click',()=>{
   const name = document.getElementById('txtName').value;
   const email = document.getElementById('txtEmail').value;
   const address = document.getElementById('txtAddress').value;
-
-  
   let isValid = true;
   isValid &=valid.checkEmpty(id,'spanId','khong de trong') &&
   valid.checkNumber(id,'spanId','phai la so');
@@ -45,38 +43,41 @@ document.getElementById('btnAdd').addEventListener('click',()=>{
     const price = Number(document.getElementById('txtPrice').value);
     const rating = document.getElementById('txtRating').value;
 
-    const date = document.getElementById('txtDate').value;
+    const date = Number(document.getElementById('txtDate').value);
     const salary = Number(document.getElementById('txtSalary').value);
       if(toan>0&&toan<=10&&ly>0&&ly<=10&&hoa>0&&hoa<=10){
           const person =new Student(toan,ly,hoa,id,name,address,email);
           person.getActive();
-          console.log(person);
           if(listPerson.getValueID(person.id) === false){
             listPerson.addPerson(person);
             setLocalStorage();
             showInfor(listPerson.arrayPerson);
+            document.getElementById('mainPerson').innerHTML=person.getActive();
+            console.log(person);
             document.getElementById('formPerson').reset();
           }else{
             alert ('id da ton tai');
           }
       }else if(nameEntity!== "" && price>0 && rating!== "") {
             const person =new Customer(nameEntity,price,rating,id,name,address,email);
-            console.log(person);
+            
             if(listPerson.getValueID(person.id) === false){
               listPerson.addPerson(person);
               setLocalStorage();
               showInfor(listPerson.arrayPerson);
+              document.getElementById('mainPerson').innerHTML=person.getActive();
               document.getElementById('formPerson').reset();
             }else{
               alert ('id da ton tai');
             }
           
-      }else if(date!== '' && salary>0) {
+      }else if(date>0 && salary>0) {
           const person =new Employee(date,salary,id,name,address,email);
           if(listPerson.getValueID(person.id) === false){
             listPerson.addPerson(person);
             setLocalStorage();
             showInfor(listPerson.arrayPerson);
+            document.getElementById('mainPerson').innerHTML=person.getActive();
             document.getElementById('formPerson').reset();
           }else{
             alert ('id da ton tai');
@@ -85,22 +86,21 @@ document.getElementById('btnAdd').addEventListener('click',()=>{
         alert('dien sai thong tin')
       )
   }
+  
 });
 
 function showInfor(listPerson) {
   const content = listPerson.map((person) => {
     
     //destructuring skill
-    const { id, fullName, address, email} = person;
+    const { id, fullName, address, email,type} = person;
     return `
           <tr>
                 <td>${id}</td>
                 <td>${fullName}</td>
                 <td>${email}</td>
                 <td>${address}</td>
-                <td>
-                <button onclick="detailPerson('${id}')"  class ="btn btn-danger"> Xem Chi Tiết </button>
-                </td>
+                <td>${type}</td>
                 <td>
                 <button onclick="deletePerson('${id}')"  class ="btn btn-danger"> xóa </button>
                 <button onclick="findPersonById('${id}')" class ="btn btn-primary"> Sửa </button>
@@ -116,7 +116,6 @@ const deletePerson = (id)=>{
   setLocalStorage();
 }
 window.deletePerson = deletePerson;
-
 
 const findPersonById =(id)=>{
   const indexPersonById = listPerson.getPersonById(id);
@@ -165,43 +164,38 @@ document.getElementById('btnUpdate').addEventListener('click',()=>{
     const price = Number(document.getElementById('txtPrice').value);
     const rating = document.getElementById('txtRating').value;
 
-    const date = document.getElementById('txtDate').value;
+    const date = Number(document.getElementById('txtDate').value);
     const salary = Number(document.getElementById('txtSalary').value);
       if(toan>0&&ly>0&&hoa>0){
           const person =new Student(toan,ly,hoa,id,name,address,email);
             listPerson.updatePerSon(person);
             setLocalStorage();
             showInfor(listPerson.arrayPerson);
+            document.getElementById('mainPerson').innerHTML=person.getActive();
       }else if(nameEntity!== "" && price>0 && rating!== "") {
           const person =new Customer(nameEntity,price,rating,id,name,address,email);
             listPerson.updatePerSon(person);
             setLocalStorage();
             showInfor(listPerson.arrayPerson);
-      }else if(date!== '' && salary>0) {
-          const person =new Employee(nameEntity,price,rating,id,name,address,email);
+            document.getElementById('mainPerson').innerHTML=person.getActive();
+      }else if(date>0 && salary>0) {
+        const person =new Employee(date,salary,id,name,address,email);
             listPerson.updatePerSon(person);
             setLocalStorage();
             showInfor(listPerson.arrayPerson);
+            document.getElementById('mainPerson').innerHTML=person.getActive();
       }else (
         alert('dien sai thong tin')
       )
   }
 });
-
 document.getElementById('btnReset').addEventListener('click',()=>{
     document.getElementById('formPerson').reset();
     document.getElementById('txtId').disabled = false;
 });
-function detailPerson (id) {
-  const indexDetailPersonById = listPerson.getPersonById(id);
-  if(indexDetailPersonById>-1){
-    // document.getElementById('txtIdDetail').value=listPerson.arrayPerson[indexDetailPersonById].id
-    
-    // document.getElementById('txtNameDetail').value=listPerson.arrayPerson[indexDetailPersonById].fullName;
-    // document.getElementById('txtActiveDetail').value=listPerson.arrayPerson[indexDetailPersonById].getActive();
-    console.log(listPerson.arrayPerson[indexDetailPersonById])
-    // document.getElementById('txtTypeDetail').value=listPerson.arrayPerson[indexDetailPersonById].type;
-    console.log(listPerson.arrayPerson[indexDetailPersonById].type)
-  }
-}
-window.detailPerson = detailPerson;
+document.getElementById('btnSearch').addEventListener('click',()=>{
+  const keyWord = document.getElementById('txtSearch').value;
+  let resultType = listPerson.findByType(keyWord);
+  showInfor(resultType);
+  document.getElementById('form-search').reset();
+});

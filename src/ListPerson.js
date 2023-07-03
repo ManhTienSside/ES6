@@ -33,10 +33,16 @@ export class ListPerson {
             this.arrayPerson[indexUpdate]=person;
         }
     }
-    getDetailPersonById(id){
-        let indexDetail = this.getPersonById(id);
-        if( indexDetail >-1) {
-            return this.arrayPerson[indexDetail];
-        }
-    } 
+    findByType(type){
+        let arrayFindType = [];
+        let valueType = type.toLowerCase().replace(/\s/g,'');
+        this.arrayPerson.map((person)=>{
+            let resultType = person.type.toLowerCase().replace(/\s/g,'').indexOf(valueType);
+            if(resultType>-1){
+                arrayFindType.push(person);
+            }
+        })
+        return arrayFindType;
+    }
+    
 }

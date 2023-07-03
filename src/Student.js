@@ -5,11 +5,17 @@ export class Student extends Person {
         this.toan =toan;
         this.ly=ly;
         this.hoa=hoa;
-        this.active = 0;
         this.type = 'Student';
     }
+    getTotal(){
+        this.total = (this.toan + this.ly+ this.hoa)/3;
+        return this.total;
+    }
     getActive(){
-        this.active = (this.toan + this.ly+ this.hoa)/3;
-        return this.active;
+        return `
+        <h3>Mã:${this.id}</h3>
+        <p>${this.fullName}</p>
+        <p>Tính Trung Binh= ${this.getTotal()}</p>
+        `
     }
 }

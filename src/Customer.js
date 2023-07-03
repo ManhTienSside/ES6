@@ -6,11 +6,14 @@ export class Customer extends Person {
         this.price = price;
         this.rating = rating;
         this.type = 'Customer';
-        this.active = ''
+        
     }
     getActive(){
-        return this.active= `
-        <p>Đánh Giá = ${this.rating}</p>
+        return `
+        <h3>Mã:${this.id}</h3>
+        <p>Tên: = ${ this.nameEntity}</p>
+        <p>Đánh Chất Lượng = ${this.rating}</p>
+        <p>Đánh Giá Đơn Hàng = ${this.price}</p>
         `
     }
 }

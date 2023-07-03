@@ -6,10 +6,16 @@ export class Employee extends Person {
         this.date = date;
         this.salary = salary;
         this.type = 'Employee';
-        this.total=0;
     }
-    getActive() {
-        this.total = this.date * this.salary;
+    getTotal() {
+        this.total = (this.date * this.salary);
         return this.total;
+    }
+    getActive(){
+        return `
+        <h3>Mã:${this.id}</h3>
+        <p>${this.fullName}</p>
+        <p>Tính Tổng= ${this.getTotal()}</p>
+        `
     }
 }
